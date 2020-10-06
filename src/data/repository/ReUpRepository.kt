@@ -6,6 +6,7 @@ import com.kismetapps.models.User
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.statements.InsertStatement
 
 class ReUpRepository : Repository {
@@ -32,6 +33,12 @@ class ReUpRepository : Repository {
             displayName = row[Users.displayName],
             passwordHash = row[Users.passwordHash]
         )
+    }
+
+    override suspend fun getUsers(): List<User> {
+        return dbQuery {
+            Users.selectAll().mapNotNull { rowToUser(it) }
+        }
     }
 
     override suspend fun findUserById(userId: Int) = dbQuery {

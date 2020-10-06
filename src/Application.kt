@@ -5,6 +5,7 @@ import com.kismetapps.data.auth.JwtService
 import com.kismetapps.data.auth.ReUpSession
 import com.kismetapps.data.auth.hash
 import com.kismetapps.data.repository.ReUpRepository
+import com.kismetapps.routes.auth
 import com.kismetapps.routes.users
 import io.ktor.application.*
 import io.ktor.auth.*
@@ -58,7 +59,8 @@ fun Application.module(testing: Boolean = false) {
     }
 
     routing {
-        users(db, jwtService, hashFunction)
+        auth(db, jwtService, hashFunction)
+        users(db)
     }
 }
 
