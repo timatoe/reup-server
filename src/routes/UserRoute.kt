@@ -4,6 +4,7 @@ import com.kismetapps.API_VERSION
 import com.kismetapps.data.auth.JwtService
 import com.kismetapps.data.auth.ReUpSession
 import com.kismetapps.data.repository.Repository
+import com.kismetapps.models.User
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.http.*
@@ -31,9 +32,7 @@ fun Route.users(
 ) {
     authenticate("jwt") {
         get<UserRoute> {
-            val user = call.sessions.get<ReUpSession>()?.let {
-                db.findUserById(it.userId)
-            }
+            val user = call.authentication.principal<User>()
             if (user == null) {
                 call.respond(HttpStatusCode.BadRequest, "Problem retrieving User")
                 return@get
