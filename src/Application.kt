@@ -12,10 +12,12 @@ import io.ktor.auth.*
 import io.ktor.auth.jwt.*
 import io.ktor.features.*
 import io.ktor.gson.*
+import io.ktor.http.*
 import io.ktor.locations.*
 import io.ktor.routing.*
 import io.ktor.sessions.*
 import io.ktor.util.*
+import java.time.Duration
 import kotlin.collections.set
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
@@ -25,8 +27,21 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 @Suppress("unused") // Referenced in application.conf
 @kotlin.jvm.JvmOverloads
 fun Application.module(testing: Boolean = false) {
-    install(Locations) {
+    install(CORS) {
+        method(HttpMethod.Options)
+        header(HttpHeaders.AccessControlAllowHeaders)
+        header(HttpHeaders.ContentType)
+        header(HttpHeaders.AccessControlAllowOrigin)
+        header("Authorization")
+        anyHost()
+        allowCredentials = true
+        allowNonSimpleContentTypes = true
+        maxAge = Duration.ofDays(1)
     }
+
+    install(CallLogging)
+
+    install(Locations) 
 
     install(Sessions) {
         cookie<ReUpSession>("REUP_SESSION") {
