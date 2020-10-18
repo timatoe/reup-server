@@ -1,18 +1,14 @@
 package com.kismetapps.routes
 
 import com.kismetapps.API_VERSION
-import com.kismetapps.data.auth.JwtService
-import com.kismetapps.data.auth.ReUpSession
 import com.kismetapps.data.repository.Repository
 import com.kismetapps.models.User
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.http.*
 import io.ktor.locations.*
-import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
-import io.ktor.sessions.*
 
 const val USER = "$API_VERSION/user"
 const val USER_USER = "$USER/user"
@@ -28,7 +24,7 @@ class UsersRoute
 
 @KtorExperimentalLocationsAPI
 fun Route.users(
-    db: Repository
+        db: Repository
 ) {
     authenticate("jwt") {
         get<UserRoute> {

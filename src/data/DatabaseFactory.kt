@@ -1,6 +1,6 @@
 package com.kismetapps.data
 
-import com.kismetapps.data.tables.Users
+import com.kismetapps.data.tables.UserTable
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import kotlinx.coroutines.Dispatchers
@@ -14,7 +14,7 @@ object DatabaseFactory {
         Database.connect(hikari())
 
         transaction {
-            SchemaUtils.create(Users)
+            SchemaUtils.create(UserTable)
         }
     }
 
@@ -38,7 +38,7 @@ object DatabaseFactory {
     }
 
     suspend fun <T> dbQuery(block: () -> T): T =
-        withContext(Dispatchers.IO) {
-            transaction { block() }
-        }
+            withContext(Dispatchers.IO) {
+                transaction { block() }
+            }
 }
