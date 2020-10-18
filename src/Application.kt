@@ -27,6 +27,8 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 @Suppress("unused") // Referenced in application.conf
 @kotlin.jvm.JvmOverloads
 fun Application.module(testing: Boolean = false) {
+    install(DefaultHeaders)
+
     install(CORS) {
         method(HttpMethod.Options)
         header(HttpHeaders.AccessControlAllowHeaders)
@@ -41,7 +43,7 @@ fun Application.module(testing: Boolean = false) {
 
     install(CallLogging)
 
-    install(Locations) 
+    install(Locations)
 
     install(Sessions) {
         cookie<ReUpSession>("REUP_SESSION") {
